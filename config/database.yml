@@ -4,23 +4,12 @@
 #   Ensure the SQLite 3 gem is defined in your Gemfile
 #   gem 'sqlite3'
 #
-pg: &pg
+default: &default
   adapter: postgresql
   host: localhost
   username:
   password:
   pool: 5
-
-mysql: &mysql
-  adapter: mysql2
-  host: 127.0.0.1
-  username: root
-  password: root
-  port: 3306
-  encoding: utf8
-
-default: &default
-  <<: *pg
 
 development:
   <<: *default
