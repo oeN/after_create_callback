@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
   def generate_token
     update_column :token, SecureRandom.hex(8)
   rescue ActiveRecord::RecordNotUnique
-    @retry_count = (@retry_count || 0) + 1
+    @retry_count = @retry_count.to_i + 1
     retry if @retry_count <= retries_limit
   end
 
