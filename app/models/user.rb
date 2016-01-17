@@ -1,31 +1,18 @@
 class User < ActiveRecord::Base
-  before_create :generate_token
-  after_rollback :check_rollback
-
+  after_create :generate_token
+  
   attr_accessor :retry_count
-
-  def save
-    super
-  rescue ActiveRecord::RecordNotUnique
-  end
-
-  def save!
-    super
-  rescue ActiveRecord::RecordNotUnique
-  end
 
   private
 
   def generate_token
-    self.token = SecureRandom.hex(8)
+    update_column :token, SecureRandom.hex(8)
+  rescue ActiveRecord::RecordNotUnique
+    @retry_count = (@retry_count || 0) + 1
+    retry if @retry_count <= retries_limit
   end
 
   def retries_limit
     3
-  end
-
-  def check_rollback
-    @retry_count = (@retry_count || 0) + 1
-    save if @retry_count <= retries_limit
   end
 end
