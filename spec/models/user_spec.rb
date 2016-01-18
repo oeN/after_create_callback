@@ -9,7 +9,7 @@ RSpec.describe User, type: :model do
     expect(SecureRandom).to receive(:hex).twice
 
     subject.save
-    expect(subject).to be_persisted
+    expect(subject.reload.token).to match "different_token"
   end
 
   it 'limit retries to generate a different token' do
@@ -18,6 +18,6 @@ RSpec.describe User, type: :model do
     expect(SecureRandom).to receive(:hex).twice
 
     subject.save!
-    expect(subject).to_not be_persisted
+    expect(subject.token).to be_nil
   end
 end
