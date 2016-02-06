@@ -7,9 +7,9 @@
 default: &default
   adapter: postgresql
   host: localhost
-  username:
-  password:
-  pool: 5
+  username: <%= ENV["DB_USERNAME"] %>
+  password: <%= ENV["DB_PASSWORD"] %>
+  pool: <%= ENV["DB_POOL"] || 15 %>
 
 development:
   <<: *default
